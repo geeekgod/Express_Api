@@ -4,6 +4,9 @@ const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
+//
+const User = require("./models/users");
+
 // Config Dot env to access env's
 dotenv.config();
 
@@ -35,4 +38,24 @@ app.use(cors());
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello From Api" });
+});
+
+app.post("/auth/signup", async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const userDat = { name: req.body.name, password: hashedPassword };
+    const user = new User(userDat);
+
+    user
+      .save()
+      .then((result) => {
+        console.log(result);
+        res.status(201).json({ message: "User Created" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch {
+    res.status(500).json();
+  }
 });
