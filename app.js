@@ -40,6 +40,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello From Api" });
 });
 
+// Signup auth api endpoint
+
 app.post("/auth/signup", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -68,4 +70,29 @@ app.post("/auth/signup", async (req, res) => {
   } catch {
     res.status(500).json();
   }
+});
+
+// Signin auth api endpoint
+
+app.post("/auth/signin", async (req, res) => {
+  User.find({ name: req.body.name })
+    .then(async (user_t) => {
+      const user = user_t[0];
+      if (!user) {
+        return res.status(400).json({ err: "User not found please register" });
+      } else {
+        try {
+          if (await bcrypt.compare(req.body.password, user.password)) {
+            res.json({ message: "Logged in!!" });
+          } else {
+            res.json({ err: "Incorrect Password" });
+          }
+        } catch {
+          res.status(500).json();
+        }
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
