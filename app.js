@@ -46,11 +46,21 @@ app.post("/auth/signup", async (req, res) => {
     const userDat = { name: req.body.name, password: hashedPassword };
     const user = new User(userDat);
 
-    user
-      .save()
-      .then((result) => {
-        console.log(result);
-        res.status(201).json({ message: "User Created" });
+    User.find({ name: req.body.name })
+      .then((user_t) => {
+        if (user_t[0] !== undefined) {
+          res.status(403).json({ errMsg: "User Already Exists" });
+        } else {
+          user
+            .save()
+            .then((result) => {
+              console.log(result);
+              res.status(201).json({ message: "User Created" });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       })
       .catch((err) => {
         console.log(err);
