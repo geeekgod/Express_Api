@@ -4,6 +4,10 @@
   "main": "app.js",
   "author": "Rishabh Singh",
   "license": "MIT",
+  "scripts": {
+    "start": "node app.js",
+    "devStart": "nodemon app.js"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
