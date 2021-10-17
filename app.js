@@ -1,5 +1,9 @@
 const express = require("express");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
+
+// Mongo DB uri
+const dbURI = `mongodb+srv://${process.env.APP_DB_USERNAME}:${process.env.APP_DB_PASSWORD}@cluster0.yx8a6.mongodb.net/${process.env.APP_NAME}?retryWrites=true&w=majority`;
 
 const app = express();
 
