@@ -83,7 +83,7 @@ app.post("/auth/signin", async (req, res) => {
       } else {
         try {
           if (await bcrypt.compare(req.body.password, user.password)) {
-            res.json({ message: "Logged in!!" });
+            res.json({ message: { message: "Logged in!!" }, user });
           } else {
             res.json({ err: "Incorrect Password" });
           }
